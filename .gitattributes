@@ -4,3 +4,11 @@ Llama-3-ELYZA-JP-8B-q4_k_m.gguf.003 filter=lfs diff=lfs merge=lfs -text
 Llama-3-ELYZA-JP-8B-q4_k_m.gguf.001 filter=lfs diff=lfs merge=lfs -text
 ollama.tar.001 filter=lfs diff=lfs merge=lfs -text
 ollama.tar.002 filter=lfs diff=lfs merge=lfs -text
+Qwen3-1.7B-Q8_0.gguf filter=lfs diff=lfs merge=lfs -text
+Qwen3-8B-Q4_K_M.gguf.001 filter=lfs diff=lfs merge=lfs -text
+Qwen3-8B-Q4_K_M.gguf.002 filter=lfs diff=lfs merge=lfs -text
+Qwen3-8B-Q4_K_M.gguf.003 filter=lfs diff=lfs merge=lfs -text
+bge-reranker-v2-m3-Q4_K_M.gguf filter=lfs diff=lfs merge=lfs -text
+bge-m3-Q4_K_M.gguf filter=lfs diff=lfs merge=lfs -text
+gemma-3-4b-it-q4_0.gguf.001 filter=lfs diff=lfs merge=lfs -text
+gemma-3-4b-it-q4_0.gguf.002 filter=lfs diff=lfs merge=lfs -text
