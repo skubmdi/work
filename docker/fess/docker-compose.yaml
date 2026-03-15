@@ -1,0 +1,67 @@
+services:
+  fess:
+    image: ghcr.io/codelibs/fess:15.5.1
+    container_name: fess
+    environment:
+      - "SEARCH_ENGINE_HTTP_URL=http://opensearch:9200"
+      - "FESS_DICTIONARY_PATH=${FESS_DICTIONARY_PATH:-/usr/share/opensearch/config/dictionary/}"
+      - "FESS_JAVA_OPTS=-Dfess.config.rag.chat.enabled=true -Dfess.config.rag.llm.ollama.api.url=http://ollama:11434 -Dfess.config.rag.llm.ollama.timeout=300000"
+    ports:
+      - "8082:8080"
+    depends_on:
+      - ollama
+      - opensearch
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: always
+
+  opensearch:
+    image: ghcr.io/codelibs/fess-opensearch:3.4.0
+    container_name: fess.opensearch
+    environment:
+      - node.name=opensearch
+      - discovery.seed_hosts=opensearch
+      - cluster.initial_cluster_manager_nodes=opensearch
+      - cluster.name=fess-search
+      - bootstrap.memory_lock=true
+      - node.roles=cluster_manager,data,ingest,ml
+      - "OPENSEARCH_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "DISABLE_INSTALL_DEMO_CONFIG=true"
+      - "DISABLE_SECURITY_PLUGIN=true"
+      - "FESS_DICTIONARY_PATH=/usr/share/opensearch/config/dictionary"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65535
+        hard: 65535
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+      - opensearch_dictionary:/usr/share/opensearch/config/dictionary
+    ports:
+      - 9200:9200
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: always
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: fess.ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ../../gguf:/root/.ollama/gguf
+    restart: always
+
+volumes:
+  ollama_data:
+  opensearch_data:
+  opensearch_dictionary:

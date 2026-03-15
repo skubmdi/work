@@ -1,0 +1,27 @@
+services:
+  webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: webui
+    ports:
+      - "8081:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      - open-webui:/app/backend/data
+      - ../../gguf:/root/.ollama/gguf
+    depends_on:
+      - ollama
+    restart: always
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: webui.ollama
+    ports:
+      - "11134:11434"
+    volumes:
+      - ollama:/root/.ollama
+    restart: always
+
+volumes:
+  webui:
+  ollama:
